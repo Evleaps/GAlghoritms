@@ -54,6 +54,8 @@ fun main() {
             maxS = environmentMaxS
             currentPos = environmentBestPos
             println("Сработал if, смена максимума, кодировка: $maxS | приспособленность:$maxAdaptation")
+        } else {
+            currentPos = (Math.random() * (INDIVIDUALS_QUANTITY - 1)).toInt()
         }
     }
 

@@ -2,12 +2,12 @@ package lab2
 
 import kotlin.math.pow
 
-private const val LENGTH_OF_ENCODING = 10
+private const val LENGTH_OF_ENCODING = 5
 private const val STEP_QUANTITY = 10
 private const val MAX_HAMMING_DISTANCE = 3L
 
 private val ENVIRONMENT_DISTANCE = 10.0.pow(2.0).toInt()
-private val INDIVIDUALS_QUANTITY = 32.0.pow(2.0).toInt()
+private val INDIVIDUALS_QUANTITY = 2.0.pow(5.0).toInt()
 
 @ExperimentalStdlibApi
 fun main() {
@@ -90,9 +90,18 @@ private fun isMatchEnvironment(e1: Entity, e2: Entity): Boolean {
 }
 
 private fun generateEncodingList(): List<Entity> {
+
     fun generateEncode(pos: Int): String {
+        var n = pos
+        var result = ""
+
+        do {
+            result = ('0' + (n % 2)) + result
+            n /= 2
+        } while (n > 0)
+
         return String
-            .format("%${LENGTH_OF_ENCODING}s", Integer.toBinaryString(pos))
+            .format("%${LENGTH_OF_ENCODING}s", result)
             .replace(' ', '0')
     }
 

@@ -2,8 +2,8 @@ package lab3
 
 import kotlin.math.pow
 
-private const val LENGTH_OF_ENCODING = 8
-private const val STEP_QUANTITY = 10
+var LENGTH_OF_ENCODING = 8
+var STEP_QUANTITY = 10
 private const val MAX_HAMMING_DISTANCE = 3L
 
 private val ENVIRONMENT_DISTANCE = 10.0.pow(2.0).toInt()
@@ -87,6 +87,7 @@ private fun getRange(list: List<*>, position: Int): IntRange {
 
     var startRange = position - ENVIRONMENT_DISTANCE
     var endRange = position + ENVIRONMENT_DISTANCE
+    STEP_QUANTITY = (8..10).random()
 
     if (startRange < min) startRange = min
     if (endRange > max) endRange = max
@@ -118,7 +119,7 @@ private fun generateEncodingList(): List<Entity> {
 
     fun generateAdaptation(): Long {
         val code = StringBuilder()
-        for (i in 0 until LENGTH_OF_ENCODING) {
+        for (i in 0 until 4) {
             code.append((0..9).random())
         }
         return code.toString().toLong()

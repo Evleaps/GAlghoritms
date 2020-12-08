@@ -2,12 +2,12 @@ package lab3
 
 import kotlin.math.pow
 
-var LENGTH_OF_ENCODING = 8
+var LENGTH_OF_ENCODING = 5
 var STEP_QUANTITY = 10
 private const val MAX_HAMMING_DISTANCE = 3L
 
-private val ENVIRONMENT_DISTANCE = 10.0.pow(2.0).toInt()
-private val INDIVIDUALS_QUANTITY = 32.0.pow(2.0).toInt()
+private val ENVIRONMENT_DISTANCE = 2.0.pow(5.0).toInt()
+private val INDIVIDUALS_QUANTITY = 2.0.pow(5.0).toInt()
 
 @ExperimentalStdlibApi
 fun main() {
@@ -24,6 +24,7 @@ fun main() {
     var currentPos = (Math.random() * (INDIVIDUALS_QUANTITY - 1)).toInt()
     for (step in 0 until STEP_QUANTITY) {
         println("\nШаг $step")
+        println("Текущий максимум: ${encodingList[currentPos].encoding}")
 
         val environmentEntityList = generateEnvironmentEntityList(encodingList, currentPos)
 
@@ -117,12 +118,9 @@ private fun generateEncodingList(): List<Entity> {
             .replace(' ', '0')
     }
 
-    fun generateAdaptation(): Long {
-        val code = StringBuilder()
-        for (i in 0 until 4) {
-            code.append((0..9).random())
-        }
-        return code.toString().toLong()
+    fun generateAdaptation(pos: Int): Long {
+        val v = (pos - (INDIVIDUALS_QUANTITY - 1))
+        return v.toDouble().pow(2.0).toLong()
     }
 
     val entities = mutableListOf<Entity>()
@@ -131,7 +129,7 @@ private fun generateEncodingList(): List<Entity> {
             Entity(
                 id = individualNumber,
                 encoding = generateEncode(individualNumber),
-                adaptation = generateAdaptation()
+                adaptation = generateAdaptation(individualNumber)
             )
         )
     }

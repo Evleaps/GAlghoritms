@@ -12,6 +12,7 @@ private val INDIVIDUALS_QUANTITY = 2.0.pow(5.0).toInt()
 @ExperimentalStdlibApi
 fun main() {
     val encodingList = generateEncodingList()
+    val blockList = mutableListOf<Entity>()
     encodingList.take(32).forEachIndexed { index, entity ->
         println("${index.inc()}) кодировка: ${entity.encoding}, приспособленность: ${entity.adaptation}")
     }
@@ -23,10 +24,17 @@ fun main() {
     var currentPos = (Math.random() * (INDIVIDUALS_QUANTITY - 1)).toInt()
 
     for (step in 0 until STEP_QUANTITY) {
+
+        var environmentEntityList = generateEnvironmentEntityList(encodingList, currentPos)
+        environmentEntityList = environmentEntityList - blockList
+
+        if (environmentEntityList.isEmpty()) {
+            break
+        }
+
         println("\nШаг $step")
 
-        val environmentEntityList = generateEnvironmentEntityList(encodingList, currentPos)
-
+        println("Текущий максимум: ${encodingList[currentPos].encoding}")
         println("Получена окрестность на основе Хэменовова расстояния")
         environmentEntityList.take(32).forEachIndexed { index, entity ->
             println("${index.inc()}) кодировка: ${entity.encoding}, приспособленность: ${entity.adaptation}")
@@ -40,6 +48,8 @@ fun main() {
             maxS = randomEntityFromEnvironment.encoding
             currentPos = randomEntityFromEnvironment.id
             println("Сработал if, смена максимума, кодировка: $maxS | приспособленность:$maxAdaptation")
+        } else {
+            blockList.add(randomEntityFromEnvironment)
         }
     }
 
@@ -105,14 +115,9 @@ private fun generateEncodingList(): List<Entity> {
             .replace(' ', '0')
     }
 
-    fun generateAdaptation(): Long {
-        val code = StringBuilder()
-        for (i in 0 until 4) {
-            code.append((0..9).random())
-        }
-        return code.toString().toLong()
+    fun generateAdaptation(pos: Int): Long {
+        return pos.toLong()
     }
-
 
     val entities = mutableListOf<Entity>()
     for (individualNumber in 0 until INDIVIDUALS_QUANTITY) {
@@ -120,7 +125,7 @@ private fun generateEncodingList(): List<Entity> {
             Entity(
                 id = individualNumber,
                 encoding = generateEncode(individualNumber),
-                adaptation = generateAdaptation()
+                adaptation = generateAdaptation(individualNumber)
             )
         )
     }
